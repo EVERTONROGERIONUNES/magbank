@@ -1,13 +1,25 @@
-import React from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import './App.scss';
+import './App.css';
 
-const App = () => (
-  <div className='App'>
-    <Navbar />
-    <Hero />
-  </div>
-);
+import Navigation from './components/Navigation';
+import Hero from './components/Hero';
+import CenteredButton from './components/CenteredButton';
+import CardList from './components/CardList';
+import CreditCard from './components/CreditCard';
+
+import posts from './data/posts';
+
+function App() {
+  return (
+    <div className="App">
+      <Navigation />
+      <Hero />
+      <CreditCard />
+      <CardList posts={posts} />
+      <CenteredButton> 
+        Abra a sua conta 
+      </CenteredButton>
+    </div>
+  );
+}
 
 export default App;

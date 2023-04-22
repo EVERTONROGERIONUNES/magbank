@@ -1,4 +1,3 @@
-import React from 'react';
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -13,7 +12,7 @@ const Hero = () => {
   return (
     <Card className="text-center text-light hero">
       <Container>
-        <Row className='my-lg-5'>
+        <Row>
           <Col lg className="text-lg-end mt-5">
             <Image className="d-lg-none" src={logo} alt="logo"/>
             <Image className="d-none d-lg-inline-block" src={logoDesktop} alt="logo" />
