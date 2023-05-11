@@ -1,36 +1,48 @@
-import './App.css';
+import { useState } from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
+
+import Home from './views/Home';
+import Login from './views/Login';
+import Dashboard from './views/Dashboard';
 
 import Navigation from './components/Navigation';
-import Hero from './components/Hero';
-import CenteredButton from './components/CenteredButton';
-import CardList from './components/CardList';
-import CreditCard from './components/CreditCard';
-import AccountModal from './components/AccountModal';
-import Institutional from './components/Institutional';
-import Faq from './components/Faq';
 import Footer from './components/Footer';
+import AccountModal from './components/AccountModal';
 
-import posts from './data/posts';
-import { useState } from 'react';
+import './App.css';
 
- 
 function App() {
-
   const [showModal, setShowModal] = useState(false);
+  const [name, setName] = useState();
+  const [account, setAccount] = useState();
+  const isLogged = name && account;
+  const fakeAuth = {
+    login: (name, account, cb) => {
+      setName(name);
+      setAccount(account);
+      setTimeout(cb, 100);
+    },
+    logout: (cb) => {
+      setName();
+      setAccount();
+      setTimeout(cb, 100);
+    }
+  };
+
+  const PrivateRoute = ({ Component, logged}) => {
+    return logged ? <Component name={name} account={account} /> : <Navigate to='/login' />
+  }
 
   return (
     <div className="App">
-      <Navigation handleCreateAccount={() => setShowModal(true)} />
-      <Hero />
-      <CreditCard />
-      <CardList posts={posts} />
-      <CenteredButton> 
-        Abra a sua conta 
-      </CenteredButton>
-      <Institutional />
-      <Faq />
+      <Navigation handleCreateAccount={() => setShowModal(true)} logged={isLogged} auth={fakeAuth} />
+      <Routes>
+        <Route path='/' element={<Home handleClick={() => setShowModal(true)} />}></Route>
+        <Route path='/login' element={<Login auth={fakeAuth} />}></Route>
+        <Route path='/dashboard/*' element={<PrivateRoute Component={Dashboard} logged={isLogged} />} />
+      </Routes>
       <Footer />
-      <AccountModal show={showModal} handleClose={() => setShowModal(false)}/>
+      <AccountModal show={showModal} handleClose={() => setShowModal(false)} />
     </div>
   );
 }
